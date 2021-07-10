@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="cityName" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="search-button" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img id="weatherIcon" src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="nameOfCity">Dhaka</h1>
+            <h3><span id="tempertaure">38.06</span>&deg;C</h3>
+            <h1 class="lead">Clouds</h1>
+        </div>
+    </div>
+
+
+    <script>
+
+
+const city = document.getElementById("cityName"); 
+
+document.getElementById("search-button").addEventListener("click", function(){
+    async function getWeather(){
+    const weather = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=0ec50091bc2d3e6450cc9437d4f7987e&units=metric`);
+    const data = await weather.json();
+    return data
+   }
+    getWeather().then(res =>{
+       showWeather(res)
+  });
+
+})
+
+  function showWeather(res){
+       const temper = res.main.temp;
+       const icon = res.weather[0].icon;
+       const iconImg = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+       document.getElementById("tempertaure").innerText = temper;
+       document.getElementById("weatherIcon").setAttribute("src", iconImg); 
+       document.getElementById("nameOfCity").innerText = city.value;
+
+  }
+
+    </script>
+</body>
+
+</html>
+
+<!-- api keys -->
+<!-- 0ec50091bc2d3e6450cc9437d4f7987e -->
